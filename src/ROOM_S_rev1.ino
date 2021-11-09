@@ -6,6 +6,8 @@
 */
 
 
+//Just adding a comment as another test! 
+
 SYSTEM_THREAD(ENABLED); //uncomment to run all FW at startup without waiting for LTE connection to be estabished
 
 const int PIN_TO_SENSOR = D2;   // the pin that OUTPUT pin of sensor is connected to
