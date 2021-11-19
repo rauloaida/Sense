@@ -6,6 +6,8 @@
 */
 
 
+//TEST
+
 //Just adding a comment as another test! 
 
 SYSTEM_THREAD(ENABLED); //uncomment to run all FW at startup without waiting for LTE connection to be estabished
