@@ -3,85 +3,92 @@
 /******************************************************/
 
 #include "Particle.h"
-#line 1 "/Users/rauloaida/Documents/Firmware/ROOM_S_rev1/src/ROOM_S_rev1.ino"
+#line 1 "/Users/rauloaida/Documents/GitHub/Sense/src/ROOM_S_rev1.ino"
 /*  
-    Title: Test Firmware for ROOM S PCBA QA function
-    Description: Base Firmware + current measuring QA feature
+    Title: Fan Override function
+    Description: TBD
     Author: Raul Oaida
-    Date: Sept 19th 2021
+    Date: Nov 19th 2021
 */
 
 
 void setup();
 void loop();
-#line 9 "/Users/rauloaida/Documents/Firmware/ROOM_S_rev1/src/ROOM_S_rev1.ino"
-SYSTEM_THREAD(ENABLED); //uncomment to run all FW at startup without waiting for LTE connection to be estabished
+#line 9 "/Users/rauloaida/Documents/GitHub/Sense/src/ROOM_S_rev1.ino"
+SYSTEM_THREAD(ENABLED);
 
-const int PIN_TO_SENSOR = D2;   // the pin that OUTPUT pin of sensor is connected to
-int pinStateCurrent   = LOW; // current state of pin
-int pinStatePrevious  = LOW; // previous state of pin
-const unsigned long DELAY_TIME_MS = 180000; // 
-bool delayEnabled = true;
-bool setDelayExpired = false;
-unsigned long delayStartTime;
-int report(String command);
+String fanValHigh = "028";
+String fanValMed = "015";
+String fanValLow = "010";
+uint8_t value;
+uint8_t value1;
 
-void setup() {
-  Serial.begin(9600);  
-  pinMode(PIN_TO_SENSOR, INPUT_PULLUP); // set arduino pin to input mode to read value from OUTPUT pin of sensor
-  setDelayExpired = true;
-  Particle.function("report", report);
-}
-
-void loop() {
-  pinStatePrevious = pinStateCurrent; // store state
-  pinStateCurrent =! digitalRead(PIN_TO_SENSOR);   // read new state
-
-  if (pinStatePrevious == LOW && pinStateCurrent == HIGH && setDelayExpired == true) {   // pin state change: LOW -> HIGH
-    Serial.println("Motion detected!");
-    Particle.publish("M", "1", PRIVATE);
-    delayEnabled = false; // disable delay
-    setDelayExpired = false;
-  }
-  else if (pinStatePrevious == HIGH && pinStateCurrent == LOW) {   // pin state change: HIGH -> LOW
-    Serial.println("Motion stopped!");
-    delayEnabled = true; // enable delay
-    delayStartTime = millis(); // set start time
-    
-  }
-   else if (delayEnabled == true && (millis() - delayStartTime) >= DELAY_TIME_MS) {
-    Serial.println("No motion for 180 seconds!");
-    Particle.publish("M", "0", PRIVATE);
-    delayEnabled = false; // disable delay
-    setDelayExpired = true;
-  }   
-}
-
-
-//The chunk below deals with reporting current measurements to Particle Cloud for QA purpouses. 
-int report(String command)
+int Test(String command);
+int Speed(String command);
+void setup()
 {
-  if(command == "report")
+  // register the cloud function
+  Serial.begin(9600);
+  Particle.function("Fan Override", Test);
+  Particle.function("Set Speed", Speed);
+}
+
+void loop()
+{
+  uint8_t value = EEPROM.read(0);
+  uint8_t value1 = EEPROM.read(1); //reads the EEPROM byte on address 0 and publishes it to cloud. 
+  Particle.publish("Fan Override State", String(value));
+  Particle.publish("Fan Speed", String(value1));
+  delay(2000);
+}
+
+
+int Test(String command)
+{
+  if(command == "true")   //if cmd from cloud is true, permanently sets EEPROM byte on address 0 to 1;
   {
-      Serial1.begin(9600);
-      Serial1.write("P");
-      delay(10000);
-      unsigned int val1 = analogRead(A3);
-      unsigned int val2 = analogRead(A4);
-      unsigned int val3 = analogRead(A5);
-      unsigned int val4 = analogRead(A0);
-      unsigned int val5 = analogRead(A1);
-      Particle.publish("Ambient_1", String(val1), PRIVATE); //Ambient1 current
-      delay(500);
-      Particle.publish("Ambient_2", String(val2), PRIVATE); //Ambient2 current
-      delay(500);
-      Particle.publish("Spotlight_1", String(val3), PRIVATE); //Spot1 current
-      delay(500);
-      Particle.publish("Spotlight_2", String(val4), PRIVATE); //Spot 2 current -- change to A6 for BSOM
-      delay(500);
-      Particle.publish("Fan", String(val5), PRIVATE); //Fan current -- change to A7 for BSOM
-      delay(500);
-      return 1;
+    // some example functions you might have
+    Serial.print("fan override true");  
+    int addr = 0;
+    uint16_t value = 1;
+    EEPROM.put(addr, value);
+
+    return 1;
+  } else if (command == "false") {  //if cmd from cloud is false, permanently sets EEPROM byte on address 0 to 0;
+    Serial.print("fan override false");
+    int addr = 0;
+    uint16_t value = 0;
+    EEPROM.put(addr, value);
+    return 1;
   }
   else return -1;
-} 
+}
+
+int Speed(String command)
+{
+  if(command == "low")   //if cmd from cloud is true, permanently sets EEPROM byte on address 0 to 1;
+  {
+    // some example functions you might have
+    Serial.print("fan speed low");  
+    int addr = 1;
+    uint16_t value = 1;
+    EEPROM.put(addr, value);
+
+    return 1;
+  } else if (command == "medium") {  //if cmd from cloud is false, permanently sets EEPROM byte on address 0 to 0;
+    Serial.print("fan speed medium");
+    int addr = 1;
+    uint16_t value = 2;
+    EEPROM.put(addr, value);
+    return 1;
+  } else if (command == "high") {  //if cmd from cloud is false, permanently sets EEPROM byte on address 0 to 0;
+    Serial.print("fan speed high");
+    int addr = 1;
+    uint16_t value = 3;
+    EEPROM.put(addr, value);
+    return 1;
+  }
+
+
+  else return -1;
+}
