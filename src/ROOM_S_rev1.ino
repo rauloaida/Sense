@@ -8,20 +8,23 @@
 
 SYSTEM_THREAD(ENABLED);
 
+//Defining Fan Override Variables
 String fanValHigh = "028";
 String fanValMed = "015";
 String fanValLow = "010";
 uint8_t value;
 uint8_t value1;
 
+//Particle Function Callouts
 int Test(String command);
-int Speed(String command);
+
+
+
 void setup()
 {
   // register the cloud function
   Serial.begin(9600);
   Particle.function("Fan Override", Test);
-  Particle.function("Set Speed", Speed);
 }
 
 void loop()
@@ -34,15 +37,17 @@ void loop()
 }
 
 
+
+
 int Test(String command)
 {
   if(command == "true")   //if cmd from cloud is true, permanently sets EEPROM byte on address 0 to 1;
   {
-    // some example functions you might have
     Serial.print("fan override true");  
     int addr = 0;
     uint16_t value = 1;
     EEPROM.put(addr, value);
+    Particle.publish("Fan Override", "true");
 
     return 1;
   } else if (command == "false") {  //if cmd from cloud is false, permanently sets EEPROM byte on address 0 to 0;
@@ -50,36 +55,39 @@ int Test(String command)
     int addr = 0;
     uint16_t value = 0;
     EEPROM.put(addr, value);
+    Particle.publish("Fan Override", "false");
+
     return 1;
   }
-  else return -1;
-}
 
-int Speed(String command)
-{
-  if(command == "low")   //if cmd from cloud is true, permanently sets EEPROM byte on address 0 to 1;
-  {
-    // some example functions you might have
+    else if(command == "low") { //if cmd from cloud is true, permanently sets EEPROM byte on address 0 to 1;
     Serial.print("fan speed low");  
     int addr = 1;
     uint16_t value = 1;
     EEPROM.put(addr, value);
+    Particle.publish("Fan Speed", "Low");
 
     return 1;
+
   } else if (command == "medium") {  //if cmd from cloud is false, permanently sets EEPROM byte on address 0 to 0;
     Serial.print("fan speed medium");
     int addr = 1;
     uint16_t value = 2;
     EEPROM.put(addr, value);
+    Particle.publish("Fan Speed", "Medium");
+
     return 1;
   } else if (command == "high") {  //if cmd from cloud is false, permanently sets EEPROM byte on address 0 to 0;
     Serial.print("fan speed high");
     int addr = 1;
     uint16_t value = 3;
     EEPROM.put(addr, value);
+    Particle.publish("Fan Speed", "High");
+
     return 1;
   }
 
-
+  
   else return -1;
 }
+
