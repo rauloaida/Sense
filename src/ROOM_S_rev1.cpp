@@ -8,7 +8,7 @@
     Title: Fan Override function
     Description: TBD
     Author: Raul Oaida
-    Date: Nov 19th 2021
+    Date: Nov 22th 2021
 */
 
 
@@ -17,108 +17,134 @@ void loop();
 #line 9 "/Users/rauloaida/Documents/GitHub/Sense/src/ROOM_S_rev1.ino"
 SYSTEM_THREAD(ENABLED);
 
+//Includes
+//#include "Particle.h"
+#include "TSYS01.h" //for temperature sensor
+
+//Defining Fan Override Variables
+String fanValHigh = "080";
+String fanValMed = "050";
+String fanValLow = "010";
+String setFanSpeed;
+uint8_t value;
+uint8_t value1;
+bool fanOverride;
+
+//PIR Stuff
 const int PIN_TO_SENSOR = D22;   // the pin that OUTPUT pin of sensor is connected to
 int pinStateCurrent   = LOW; // current state of pin
 int pinStatePrevious  = LOW; // previous state of pin
-const unsigned long DELAY_TIME_MS = 10000; // 890000...30000 miliseconds ~ 30 seconds was 890000
-bool delayEnabled = true;
+const unsigned long DELAY_TIME_MS = 20000; //set to 890000 for 14:50 min override timer, main room function.
+bool delayEnabled = true; //PIR Delay
 unsigned long delayStartTime;
 bool lightsCondition1;
 bool lightsCondition2;
 
-
-//Defining Fan Override Variables
-String fanValHigh = "028";
-String fanValMed = "015";
-String fanValLow = "010";
-uint8_t value;
-uint8_t value1;
+//Variables for motion reporting to cloud
+const unsigned long Motion_DELAY_TIME_MS = 5000; // 
+bool Motion_delayEnabled = true;
+bool Motion_setDelayExpired = false;
+unsigned long Motion_delayStartTime;
 
 //Particle Function Callouts
 int Test(String command);
 
+//Temperature Sensor
+TSYS01 sensor;
+int reportTemp(String command);
 
-
-void setup()
-{
+void setup() {
   Serial.begin(9600);
   Particle.function("Fan Override", Test);
+  Particle.function("Report Temperature", reportTemp); 
   Serial1.begin(9600);// initialize UART to MR Logic PCBA
   pinMode(PIN_TO_SENSOR, INPUT_PULLDOWN); // set pinmode
+  Wire.begin();
+  sensor.init();
 }
 
 void loop()
 {
+  //EEPROM Read of fan enable and fan speed byes.
   uint8_t value = EEPROM.read(0);
-  uint8_t value1 = EEPROM.read(1); //reads the EEPROM byte on address 0 and publishes it to cloud. 
-  //Particle.publish("Fan Override State", String(value));
-  //Particle.publish("Fan Speed", String(value1));
+  uint8_t value1 = EEPROM.read(1); 
 
-if (value == 0){
-  Particle.publish("Testing stuff!", "running first loop bc fan override is 0");
-  pinStateCurrent =! digitalRead(PIN_TO_SENSOR);   // read new state
-  Serial.print(pinStateCurrent);
-
-}
-
-if (value == 1){
-  Particle.publish("Testing stuff!", "running 2nd loop, value is 1");
-  pinStatePrevious = pinStateCurrent; // store state
-  pinStateCurrent =! digitalRead(PIN_TO_SENSOR);   // read new state
-  Serial.print(pinStateCurrent);
-
-  if (pinStatePrevious == LOW && pinStateCurrent == HIGH) {   // pin state change: LOW -> HIGH
-    Serial.println("Motion detected!");
-    Serial1.print("F");
-    Serial1.print("030");
-    Serial.println("Turned fans to 30%");
-    delayEnabled = false; // disable delay
-    lightsCondition1 = true;
-    Serial.println("Motion detected! lightsCondition_1 set to true");
-    // TODO: turn on alarm, light or activate a device ... here
+//Checks the fan speed condition once and sets it to one of 3 pre-set FW values.
+  if (value1 == 1) {
+    setFanSpeed = fanValLow;
+  } else if (value1 == 2){
+    setFanSpeed = fanValMed;
+  } else if (value1 == 3) {
+    setFanSpeed = fanValHigh;
   }
-  else
-  if (pinStatePrevious == HIGH && pinStateCurrent == LOW) {   // pin state change: HIGH -> LOW
-    Serial.println("Motion stopped! lightCondition_1 set to false");
+  Serial.print(setFanSpeed);
+
+  pinStatePrevious = pinStateCurrent; // store state
+  pinStateCurrent =! digitalRead(PIN_TO_SENSOR);  // read new state
+
+  if (pinStatePrevious == LOW && pinStateCurrent == HIGH && Motion_setDelayExpired == true) {   // pin state change: LOW -> HIGH
+    Serial.println("Motion detected!");
+    Particle.publish("M", "1", PRIVATE);
+    Motion_delayEnabled = false; // disable delay
+    Motion_setDelayExpired = false;
+
+  }
+  else if (pinStatePrevious == HIGH && pinStateCurrent == LOW) {   // pin state change: HIGH -> LOW
+    Serial.println("Motion stopped!");
+    Motion_delayEnabled = true; // enable delay
+    Motion_delayStartTime = millis(); // set start time
+    
+  }
+   else if (Motion_delayEnabled == true && (millis() - Motion_delayStartTime) >= Motion_DELAY_TIME_MS) {
+    Serial.println("No motion for 180 seconds!");
+    Particle.publish("M", "0", PRIVATE);
+    Motion_delayEnabled = false; // disable delay
+    Motion_setDelayExpired = true;
+  }
+
+
+//Override IF Statements
+if (pinStatePrevious == LOW && pinStateCurrent == HIGH && value == 1) {   // pin state change: LOW -> HIGH
+    Serial1.print("F"); 
+    Serial1.print(setFanSpeed); 
+    delayEnabled = false; // disable delay
+    lightsCondition1 = true; 
+  }
+  else if (pinStatePrevious == HIGH && pinStateCurrent == LOW && value == 1) {   // pin state change: HIGH -> LOW
     delayEnabled = true; // enable delay
     lightsCondition1 = false;
     delayStartTime = millis(); // set start time
     
   }
-  if (lightsCondition1 == true && lightsCondition2 == true) {
+  if (lightsCondition1 == true && lightsCondition2 == true && value == 1) {
     Serial1.print("M");
-    Serial.println("both light conditions true, set lights to M mode");
     lightsCondition1 = false;
     lightsCondition2 = false;
-    Serial.println("lightsCondition_1 reset to false");
-    Serial.println("lightsCondition_2 reset to false");
   };
-  if (delayEnabled == true && (millis() - delayStartTime) >= DELAY_TIME_MS) {
-    Serial.println("No motion for 15 min! turning stuff off");
+  if (delayEnabled == true && (millis() - delayStartTime) >= DELAY_TIME_MS && value == 1) {
+    Serial.println("No motion for 20 seconds! turning stuff off"); 
     Serial1.print("O");
-    Serial.println("Set lights to OFF");
     Serial1.print("F");
     Serial1.print("000");
-    Serial.println("Fans set to 0%");
     delayEnabled = false; // disable delay
-    lightsCondition2 = true;
-    Serial.println("lightsCondition_2 set to true");
-    // TODO: turn off alarm, light or deactivate a device ... here
+    lightsCondition2 = true; 
   }
+}
 
-
+//--------------------------------------TEMPERATURE REPORTING----------------------------------------//
+int reportTemp(String command) {
+  if(command == "report") {
+  float temperatureReading;
+  sensor.read();
+  temperatureReading = sensor.temperature();
+  Particle.publish("Temperature", String(temperatureReading), PRIVATE);
+  return 1;
+  } else return -1;
 }
 
 
-}
-
-
-
-
-
-//--------------------------------------FAN OVERRIDE SECTION----------------------------------------//
-int Test(String command)
-{
+//--------------------------------------FAN OVERRIDE CLOUD FUNCTION----------------------------------------//
+int Test(String command) {
   if(command == "true")   //if cmd from cloud is true, permanently sets EEPROM byte on address 0 to 1;
   {
     Serial.print("fan override true");  
@@ -144,7 +170,6 @@ int Test(String command)
     uint16_t value = 1;
     EEPROM.put(addr, value);
     Particle.publish("Fan Speed", "Low");
-
     return 1;
 
   } else if (command == "medium") {  //if cmd from cloud is false, permanently sets EEPROM byte on address 0 to 0;
@@ -153,19 +178,18 @@ int Test(String command)
     uint16_t value = 2;
     EEPROM.put(addr, value);
     Particle.publish("Fan Speed", "Medium");
-
     return 1;
+
   } else if (command == "high") {  //if cmd from cloud is false, permanently sets EEPROM byte on address 0 to 0;
     Serial.print("fan speed high");
     int addr = 1;
     uint16_t value = 3;
     EEPROM.put(addr, value);
     Particle.publish("Fan Speed", "High");
-
     return 1;
+
   }
 
   
   else return -1;
 }
-
