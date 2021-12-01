@@ -21,23 +21,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   8 .module_info_crc 00000004  000b83f4  000b83f4  000283f4  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  9 .debug_info   001078f2  00000000  00000000  000283f8  2**0
+  9 .debug_info   001078f5  00000000  00000000  000283f8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 10 .debug_abbrev 000124a1  00000000  00000000  0012fcea  2**0
+ 10 .debug_abbrev 0001248f  00000000  00000000  0012fced  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .debug_loc    00036fd9  00000000  00000000  0014218b  2**0
+ 11 .debug_loc    00036fd9  00000000  00000000  0014217c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 12 .debug_aranges 00002970  00000000  00000000  00179164  2**0
+ 12 .debug_aranges 00002970  00000000  00000000  00179155  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_ranges 00009f28  00000000  00000000  0017bad4  2**0
+ 13 .debug_ranges 00009f28  00000000  00000000  0017bac5  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_macro  0003736a  00000000  00000000  001859fc  2**0
+ 14 .debug_macro  0003736a  00000000  00000000  001859ed  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_line   0003a803  00000000  00000000  001bcd66  2**0
+ 15 .debug_line   0003a803  00000000  00000000  001bcd57  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_str    0012d0b8  00000000  00000000  001f7569  2**0
+ 16 .debug_str    0012d0cd  00000000  00000000  001f755a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_frame  00007874  00000000  00000000  00324624  2**2
+ 17 .debug_frame  00007874  00000000  00000000  00324628  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -227,7 +227,7 @@ void setup() {
    b40ec:	490f      	ldr	r1, [pc, #60]	; (b412c <setup+0x5c>)
    b40ee:	4620      	mov	r0, r4
    b40f0:	f000 ff17 	bl	b4f22 <_ZN10CloudClass17register_functionEPFiPvPKcS0_ES0_S2_>
-  Particle.function("Fan Override", Test);
+  Particle.function("Fan Override", enableOverride);
   Particle.function("Report Temperature", reportTemp); 
   Serial1.begin(9600);// initialize UART to MR Logic PCBA
    b40f4:	f001 fd92 	bl	b5c1c <_Z22__fetch_global_Serial1v>
@@ -245,13 +245,13 @@ void setup() {
    b4110:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
   sensor.init();
    b4114:	4806      	ldr	r0, [pc, #24]	; (b4130 <setup+0x60>)
-   b4116:	f000 ba64 	b.w	b45e2 <_ZN6TSYS014initEv>
+   b4116:	f000 ba66 	b.w	b45e6 <_ZN6TSYS014initEv>
    b411a:	bf00      	nop
    b411c:	000b4ef7 	.word	0x000b4ef7
    b4120:	000b7ffc 	.word	0x000b7ffc
-   b4124:	000b43f5 	.word	0x000b43f5
+   b4124:	000b43f9 	.word	0x000b43f9
    b4128:	000b8009 	.word	0x000b8009
-   b412c:	000b4395 	.word	0x000b4395
+   b412c:	000b4399 	.word	0x000b4399
    b4130:	2003e6e8 	.word	0x2003e6e8
 
 000b4134 <_ZNSt14__shared_countILN9__gnu_cxx12_Lock_policyE0EED1Ev>:
@@ -321,12 +321,12 @@ void loop()
    b417a:	2801      	cmp	r0, #1
    b417c:	d165      	bne.n	b424a <loop+0xea>
     setFanSpeed = fanValLow;
-   b417e:	496d      	ldr	r1, [pc, #436]	; (b4334 <loop+0x1d4>)
+   b417e:	496c      	ldr	r1, [pc, #432]	; (b4330 <loop+0x1d0>)
   } else if (value1 == 2){
     setFanSpeed = fanValMed;
   } else if (value1 == 3) {
     setFanSpeed = fanValHigh;
-   b4180:	486d      	ldr	r0, [pc, #436]	; (b4338 <loop+0x1d8>)
+   b4180:	486c      	ldr	r0, [pc, #432]	; (b4334 <loop+0x1d4>)
    b4182:	f001 fc60 	bl	b5a46 <_ZN6StringaSERKS_>
 	char operator [] (unsigned int index) const;
 	char& operator [] (unsigned int index);
@@ -334,14 +334,14 @@ void loop()
 	void toCharArray(char *buf, unsigned int bufsize, unsigned int index=0) const
 		{getBytes((unsigned char *)buf, bufsize, index);}
 	const char * c_str() const { return buffer; }
-   b4186:	f8df 81b0 	ldr.w	r8, [pc, #432]	; b4338 <loop+0x1d8>
+   b4186:	f8df 81ac 	ldr.w	r8, [pc, #428]	; b4334 <loop+0x1d4>
   }
   Serial.print(setFanSpeed);
 
   pinStatePrevious = pinStateCurrent; // store state
-   b418a:	4f6c      	ldr	r7, [pc, #432]	; (b433c <loop+0x1dc>)
-   b418c:	f8df 9200 	ldr.w	r9, [pc, #512]	; b4390 <loop+0x230>
-   b4190:	4d6b      	ldr	r5, [pc, #428]	; (b4340 <loop+0x1e0>)
+   b418a:	4f6b      	ldr	r7, [pc, #428]	; (b4338 <loop+0x1d8>)
+   b418c:	f8df 9204 	ldr.w	r9, [pc, #516]	; b4394 <loop+0x234>
+   b4190:	4d6a      	ldr	r5, [pc, #424]	; (b433c <loop+0x1dc>)
   Serial.print(setFanSpeed);
    b4192:	f001 fde5 	bl	b5d60 <_Z16_fetch_usbserialv>
    b4196:	f8d8 1000 	ldr.w	r1, [r8]
@@ -371,7 +371,7 @@ void loop()
    b41cc:	d055      	beq.n	b427a <loop+0x11a>
     Serial.println("Motion detected!");
    b41ce:	f001 fdc7 	bl	b5d60 <_Z16_fetch_usbserialv>
-   b41d2:	495c      	ldr	r1, [pc, #368]	; (b4344 <loop+0x1e4>)
+   b41d2:	495b      	ldr	r1, [pc, #364]	; (b4340 <loop+0x1e0>)
    b41d4:	f001 fb31 	bl	b583a <_ZN5Print7printlnEPKc>
 inline particle::Flags<TagT, ValueT>::Flags(Flag<TagT, ValueT> flag) :
         val_(flag.value()) {
@@ -379,11 +379,11 @@ inline particle::Flags<TagT, ValueT>::Flags(Flag<TagT, ValueT> flag) :
 
 template<typename TagT, typename ValueT>
 inline particle::Flags<TagT, ValueT>::Flags(ValueT val) :
-   b41d8:	4b5b      	ldr	r3, [pc, #364]	; (b4348 <loop+0x1e8>)
+   b41d8:	4b5a      	ldr	r3, [pc, #360]	; (b4344 <loop+0x1e4>)
         return publish_event(eventName, eventData, ttl, flags1 | flags2);
-   b41da:	4a5c      	ldr	r2, [pc, #368]	; (b434c <loop+0x1ec>)
+   b41da:	4a5b      	ldr	r2, [pc, #364]	; (b4348 <loop+0x1e8>)
    b41dc:	781b      	ldrb	r3, [r3, #0]
-   b41de:	495c      	ldr	r1, [pc, #368]	; (b4350 <loop+0x1f0>)
+   b41de:	495b      	ldr	r1, [pc, #364]	; (b434c <loop+0x1ec>)
    b41e0:	f88d 3000 	strb.w	r3, [sp]
    b41e4:	a802      	add	r0, sp, #8
    b41e6:	233c      	movs	r3, #60	; 0x3c
@@ -408,18 +408,18 @@ inline particle::Flags<TagT, ValueT>::Flags(ValueT val) :
 //Override IF Statements
 if (pinStatePrevious == LOW && pinStateCurrent == HIGH && value == 1) {   // pin state change: LOW -> HIGH
    b41f8:	f8d9 9000 	ldr.w	r9, [r9]
-   b41fc:	4d55      	ldr	r5, [pc, #340]	; (b4354 <loop+0x1f4>)
-   b41fe:	4e56      	ldr	r6, [pc, #344]	; (b4358 <loop+0x1f8>)
+   b41fc:	4d54      	ldr	r5, [pc, #336]	; (b4350 <loop+0x1f0>)
+   b41fe:	4e55      	ldr	r6, [pc, #340]	; (b4354 <loop+0x1f4>)
    b4200:	f1b9 0f00 	cmp.w	r9, #0
-   b4204:	d15d      	bne.n	b42c2 <loop+0x162>
+   b4204:	d15c      	bne.n	b42c0 <loop+0x160>
    b4206:	683b      	ldr	r3, [r7, #0]
    b4208:	2b01      	cmp	r3, #1
-   b420a:	d167      	bne.n	b42dc <loop+0x17c>
+   b420a:	d166      	bne.n	b42da <loop+0x17a>
    b420c:	2c01      	cmp	r4, #1
-   b420e:	d165      	bne.n	b42dc <loop+0x17c>
+   b420e:	d164      	bne.n	b42da <loop+0x17a>
     Serial1.print("F"); 
    b4210:	f001 fd04 	bl	b5c1c <_Z22__fetch_global_Serial1v>
-   b4214:	4951      	ldr	r1, [pc, #324]	; (b435c <loop+0x1fc>)
+   b4214:	4950      	ldr	r1, [pc, #320]	; (b4358 <loop+0x1f8>)
    b4216:	f001 fafd 	bl	b5814 <_ZN5Print5printEPKc>
     Serial1.print(setFanSpeed); 
    b421a:	f001 fcff 	bl	b5c1c <_Z22__fetch_global_Serial1v>
@@ -435,33 +435,33 @@ if (pinStatePrevious == LOW && pinStateCurrent == HIGH && value == 1) {   // pin
     
   }
   if (lightsCondition1 == true && lightsCondition2 == true && value == 1) {
-   b422c:	4f4c      	ldr	r7, [pc, #304]	; (b4360 <loop+0x200>)
+   b422c:	4f4b      	ldr	r7, [pc, #300]	; (b435c <loop+0x1fc>)
    b422e:	783b      	ldrb	r3, [r7, #0]
    b4230:	2b00      	cmp	r3, #0
-   b4232:	d056      	beq.n	b42e2 <loop+0x182>
+   b4232:	d055      	beq.n	b42e0 <loop+0x180>
    b4234:	2c01      	cmp	r4, #1
-   b4236:	d154      	bne.n	b42e2 <loop+0x182>
+   b4236:	d153      	bne.n	b42e0 <loop+0x180>
     Serial1.print("M");
    b4238:	f001 fcf0 	bl	b5c1c <_Z22__fetch_global_Serial1v>
-   b423c:	4944      	ldr	r1, [pc, #272]	; (b4350 <loop+0x1f0>)
+   b423c:	4943      	ldr	r1, [pc, #268]	; (b434c <loop+0x1ec>)
    b423e:	f001 fae9 	bl	b5814 <_ZN5Print5printEPKc>
     lightsCondition1 = false;
    b4242:	2300      	movs	r3, #0
    b4244:	7033      	strb	r3, [r6, #0]
     lightsCondition2 = false;
    b4246:	703b      	strb	r3, [r7, #0]
-   b4248:	e04b      	b.n	b42e2 <loop+0x182>
+   b4248:	e04a      	b.n	b42e0 <loop+0x180>
   } else if (value1 == 2){
    b424a:	2802      	cmp	r0, #2
    b424c:	d101      	bne.n	b4252 <loop+0xf2>
     setFanSpeed = fanValMed;
-   b424e:	4945      	ldr	r1, [pc, #276]	; (b4364 <loop+0x204>)
+   b424e:	4944      	ldr	r1, [pc, #272]	; (b4360 <loop+0x200>)
    b4250:	e796      	b.n	b4180 <loop+0x20>
   } else if (value1 == 3) {
    b4252:	2803      	cmp	r0, #3
    b4254:	d197      	bne.n	b4186 <loop+0x26>
     setFanSpeed = fanValHigh;
-   b4256:	4944      	ldr	r1, [pc, #272]	; (b4368 <loop+0x208>)
+   b4256:	4943      	ldr	r1, [pc, #268]	; (b4364 <loop+0x204>)
    b4258:	e792      	b.n	b4180 <loop+0x20>
   else if (pinStatePrevious == HIGH && pinStateCurrent == LOW) {   // pin state change: HIGH -> LOW
    b425a:	f1ba 0f01 	cmp.w	sl, #1
@@ -469,7 +469,7 @@ if (pinStatePrevious == LOW && pinStateCurrent == HIGH && value == 1) {   // pin
    b4260:	b15e      	cbz	r6, b427a <loop+0x11a>
     Serial.println("Motion stopped!");
    b4262:	f001 fd7d 	bl	b5d60 <_Z16_fetch_usbserialv>
-   b4266:	4941      	ldr	r1, [pc, #260]	; (b436c <loop+0x20c>)
+   b4266:	4940      	ldr	r1, [pc, #256]	; (b4368 <loop+0x208>)
    b4268:	f001 fae7 	bl	b583a <_ZN5Print7printlnEPKc>
     Motion_delayEnabled = true; // enable delay
    b426c:	f885 a000 	strb.w	sl, [r5]
@@ -481,7 +481,7 @@ extern "C" {
 inline system_tick_t millis(void) { return HAL_Timer_Get_Milli_Seconds(); }
    b4270:	f000 fb2e 	bl	b48d0 <HAL_Timer_Get_Milli_Seconds>
     Motion_delayStartTime = millis(); // set start time
-   b4274:	4b3e      	ldr	r3, [pc, #248]	; (b4370 <loop+0x210>)
+   b4274:	4b3d      	ldr	r3, [pc, #244]	; (b436c <loop+0x20c>)
    b4276:	6018      	str	r0, [r3, #0]
    b4278:	e7be      	b.n	b41f8 <loop+0x98>
    else if (Motion_delayEnabled == true && (millis() - Motion_delayStartTime) >= Motion_DELAY_TIME_MS) {
@@ -489,507 +489,507 @@ inline system_tick_t millis(void) { return HAL_Timer_Get_Milli_Seconds(); }
    b427c:	2b00      	cmp	r3, #0
    b427e:	d0bb      	beq.n	b41f8 <loop+0x98>
    b4280:	f000 fb26 	bl	b48d0 <HAL_Timer_Get_Milli_Seconds>
-   b4284:	4b3a      	ldr	r3, [pc, #232]	; (b4370 <loop+0x210>)
+   b4284:	4b39      	ldr	r3, [pc, #228]	; (b436c <loop+0x20c>)
    b4286:	681b      	ldr	r3, [r3, #0]
    b4288:	1ac0      	subs	r0, r0, r3
-   b428a:	f241 3387 	movw	r3, #4999	; 0x1387
-   b428e:	4298      	cmp	r0, r3
-   b4290:	d9b2      	bls.n	b41f8 <loop+0x98>
+   b428a:	4b39      	ldr	r3, [pc, #228]	; (b4370 <loop+0x210>)
+   b428c:	4298      	cmp	r0, r3
+   b428e:	d9b3      	bls.n	b41f8 <loop+0x98>
     Serial.println("No motion for 180 seconds!");
-   b4292:	f001 fd65 	bl	b5d60 <_Z16_fetch_usbserialv>
-   b4296:	4937      	ldr	r1, [pc, #220]	; (b4374 <loop+0x214>)
-   b4298:	f001 facf 	bl	b583a <_ZN5Print7printlnEPKc>
-   b429c:	4b2a      	ldr	r3, [pc, #168]	; (b4348 <loop+0x1e8>)
-   b429e:	4a36      	ldr	r2, [pc, #216]	; (b4378 <loop+0x218>)
-   b42a0:	781b      	ldrb	r3, [r3, #0]
-   b42a2:	492b      	ldr	r1, [pc, #172]	; (b4350 <loop+0x1f0>)
-   b42a4:	f88d 3000 	strb.w	r3, [sp]
-   b42a8:	a802      	add	r0, sp, #8
-   b42aa:	233c      	movs	r3, #60	; 0x3c
-   b42ac:	f000 ff30 	bl	b5110 <_ZN10CloudClass13publish_eventEPKcS1_iN8particle5FlagsI15PublishFlagTypehEE>
-   b42b0:	a803      	add	r0, sp, #12
-   b42b2:	f7ff ff3f 	bl	b4134 <_ZNSt14__shared_countILN9__gnu_cxx12_Lock_policyE0EED1Ev>
+   b4290:	f001 fd66 	bl	b5d60 <_Z16_fetch_usbserialv>
+   b4294:	4937      	ldr	r1, [pc, #220]	; (b4374 <loop+0x214>)
+   b4296:	f001 fad0 	bl	b583a <_ZN5Print7printlnEPKc>
+   b429a:	4b2a      	ldr	r3, [pc, #168]	; (b4344 <loop+0x1e4>)
+   b429c:	4a36      	ldr	r2, [pc, #216]	; (b4378 <loop+0x218>)
+   b429e:	781b      	ldrb	r3, [r3, #0]
+   b42a0:	492a      	ldr	r1, [pc, #168]	; (b434c <loop+0x1ec>)
+   b42a2:	f88d 3000 	strb.w	r3, [sp]
+   b42a6:	a802      	add	r0, sp, #8
+   b42a8:	233c      	movs	r3, #60	; 0x3c
+   b42aa:	f000 ff31 	bl	b5110 <_ZN10CloudClass13publish_eventEPKcS1_iN8particle5FlagsI15PublishFlagTypehEE>
+   b42ae:	a803      	add	r0, sp, #12
+   b42b0:	f7ff ff40 	bl	b4134 <_ZNSt14__shared_countILN9__gnu_cxx12_Lock_policyE0EED1Ev>
     Motion_delayEnabled = false; // disable delay
-   b42b6:	2300      	movs	r3, #0
-   b42b8:	702b      	strb	r3, [r5, #0]
+   b42b4:	2300      	movs	r3, #0
+   b42b6:	702b      	strb	r3, [r5, #0]
     Motion_setDelayExpired = true;
-   b42ba:	4b30      	ldr	r3, [pc, #192]	; (b437c <loop+0x21c>)
-   b42bc:	2201      	movs	r2, #1
-   b42be:	701a      	strb	r2, [r3, #0]
-   b42c0:	e79a      	b.n	b41f8 <loop+0x98>
+   b42b8:	4b30      	ldr	r3, [pc, #192]	; (b437c <loop+0x21c>)
+   b42ba:	2201      	movs	r2, #1
+   b42bc:	701a      	strb	r2, [r3, #0]
+   b42be:	e79b      	b.n	b41f8 <loop+0x98>
   else if (pinStatePrevious == HIGH && pinStateCurrent == LOW && value == 1) {   // pin state change: HIGH -> LOW
-   b42c2:	f1b9 0f01 	cmp.w	r9, #1
-   b42c6:	d109      	bne.n	b42dc <loop+0x17c>
-   b42c8:	683b      	ldr	r3, [r7, #0]
-   b42ca:	b93b      	cbnz	r3, b42dc <loop+0x17c>
-   b42cc:	2c01      	cmp	r4, #1
-   b42ce:	d105      	bne.n	b42dc <loop+0x17c>
+   b42c0:	f1b9 0f01 	cmp.w	r9, #1
+   b42c4:	d109      	bne.n	b42da <loop+0x17a>
+   b42c6:	683b      	ldr	r3, [r7, #0]
+   b42c8:	b93b      	cbnz	r3, b42da <loop+0x17a>
+   b42ca:	2c01      	cmp	r4, #1
+   b42cc:	d105      	bne.n	b42da <loop+0x17a>
     lightsCondition1 = false;
-   b42d0:	7033      	strb	r3, [r6, #0]
+   b42ce:	7033      	strb	r3, [r6, #0]
     delayEnabled = true; // enable delay
-   b42d2:	702c      	strb	r4, [r5, #0]
-   b42d4:	f000 fafc 	bl	b48d0 <HAL_Timer_Get_Milli_Seconds>
+   b42d0:	702c      	strb	r4, [r5, #0]
+   b42d2:	f000 fafd 	bl	b48d0 <HAL_Timer_Get_Milli_Seconds>
     delayStartTime = millis(); // set start time
-   b42d8:	4b29      	ldr	r3, [pc, #164]	; (b4380 <loop+0x220>)
-   b42da:	6018      	str	r0, [r3, #0]
+   b42d6:	4b2a      	ldr	r3, [pc, #168]	; (b4380 <loop+0x220>)
+   b42d8:	6018      	str	r0, [r3, #0]
   if (lightsCondition1 == true && lightsCondition2 == true && value == 1) {
-   b42dc:	7833      	ldrb	r3, [r6, #0]
-   b42de:	2b00      	cmp	r3, #0
-   b42e0:	d1a4      	bne.n	b422c <loop+0xcc>
+   b42da:	7833      	ldrb	r3, [r6, #0]
+   b42dc:	2b00      	cmp	r3, #0
+   b42de:	d1a5      	bne.n	b422c <loop+0xcc>
   };
   if (delayEnabled == true && (millis() - delayStartTime) >= DELAY_TIME_MS && value == 1) {
-   b42e2:	782b      	ldrb	r3, [r5, #0]
-   b42e4:	b313      	cbz	r3, b432c <loop+0x1cc>
-   b42e6:	f000 faf3 	bl	b48d0 <HAL_Timer_Get_Milli_Seconds>
-   b42ea:	4b25      	ldr	r3, [pc, #148]	; (b4380 <loop+0x220>)
-   b42ec:	681b      	ldr	r3, [r3, #0]
-   b42ee:	1ac0      	subs	r0, r0, r3
-   b42f0:	f644 631f 	movw	r3, #19999	; 0x4e1f
-   b42f4:	4298      	cmp	r0, r3
-   b42f6:	d919      	bls.n	b432c <loop+0x1cc>
-   b42f8:	2c01      	cmp	r4, #1
-   b42fa:	d117      	bne.n	b432c <loop+0x1cc>
+   b42e0:	782b      	ldrb	r3, [r5, #0]
+   b42e2:	b30b      	cbz	r3, b4328 <loop+0x1c8>
+   b42e4:	f000 faf4 	bl	b48d0 <HAL_Timer_Get_Milli_Seconds>
+   b42e8:	4b25      	ldr	r3, [pc, #148]	; (b4380 <loop+0x220>)
+   b42ea:	681b      	ldr	r3, [r3, #0]
+   b42ec:	1ac0      	subs	r0, r0, r3
+   b42ee:	4b25      	ldr	r3, [pc, #148]	; (b4384 <loop+0x224>)
+   b42f0:	4298      	cmp	r0, r3
+   b42f2:	d919      	bls.n	b4328 <loop+0x1c8>
+   b42f4:	2c01      	cmp	r4, #1
+   b42f6:	d117      	bne.n	b4328 <loop+0x1c8>
     Serial.println("No motion for 20 seconds! turning stuff off"); 
-   b42fc:	f001 fd30 	bl	b5d60 <_Z16_fetch_usbserialv>
-   b4300:	4920      	ldr	r1, [pc, #128]	; (b4384 <loop+0x224>)
-   b4302:	f001 fa9a 	bl	b583a <_ZN5Print7printlnEPKc>
+   b42f8:	f001 fd32 	bl	b5d60 <_Z16_fetch_usbserialv>
+   b42fc:	4922      	ldr	r1, [pc, #136]	; (b4388 <loop+0x228>)
+   b42fe:	f001 fa9c 	bl	b583a <_ZN5Print7printlnEPKc>
     Serial1.print("O");
-   b4306:	f001 fc89 	bl	b5c1c <_Z22__fetch_global_Serial1v>
-   b430a:	491f      	ldr	r1, [pc, #124]	; (b4388 <loop+0x228>)
-   b430c:	f001 fa82 	bl	b5814 <_ZN5Print5printEPKc>
+   b4302:	f001 fc8b 	bl	b5c1c <_Z22__fetch_global_Serial1v>
+   b4306:	4921      	ldr	r1, [pc, #132]	; (b438c <loop+0x22c>)
+   b4308:	f001 fa84 	bl	b5814 <_ZN5Print5printEPKc>
     Serial1.print("F");
-   b4310:	f001 fc84 	bl	b5c1c <_Z22__fetch_global_Serial1v>
-   b4314:	4911      	ldr	r1, [pc, #68]	; (b435c <loop+0x1fc>)
-   b4316:	f001 fa7d 	bl	b5814 <_ZN5Print5printEPKc>
+   b430c:	f001 fc86 	bl	b5c1c <_Z22__fetch_global_Serial1v>
+   b4310:	4911      	ldr	r1, [pc, #68]	; (b4358 <loop+0x1f8>)
+   b4312:	f001 fa7f 	bl	b5814 <_ZN5Print5printEPKc>
     Serial1.print("000");
-   b431a:	f001 fc7f 	bl	b5c1c <_Z22__fetch_global_Serial1v>
-   b431e:	491b      	ldr	r1, [pc, #108]	; (b438c <loop+0x22c>)
-   b4320:	f001 fa78 	bl	b5814 <_ZN5Print5printEPKc>
+   b4316:	f001 fc81 	bl	b5c1c <_Z22__fetch_global_Serial1v>
+   b431a:	491d      	ldr	r1, [pc, #116]	; (b4390 <loop+0x230>)
+   b431c:	f001 fa7a 	bl	b5814 <_ZN5Print5printEPKc>
     delayEnabled = false; // disable delay
-   b4324:	2300      	movs	r3, #0
-   b4326:	702b      	strb	r3, [r5, #0]
+   b4320:	2300      	movs	r3, #0
+   b4322:	702b      	strb	r3, [r5, #0]
     lightsCondition2 = true; 
-   b4328:	4b0d      	ldr	r3, [pc, #52]	; (b4360 <loop+0x200>)
-   b432a:	701c      	strb	r4, [r3, #0]
+   b4324:	4b0d      	ldr	r3, [pc, #52]	; (b435c <loop+0x1fc>)
+   b4326:	701c      	strb	r4, [r3, #0]
   }
 }
-   b432c:	b004      	add	sp, #16
-   b432e:	e8bd 87f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, pc}
-   b4332:	bf00      	nop
-   b4334:	2003e6bc 	.word	0x2003e6bc
-   b4338:	2003e704 	.word	0x2003e704
-   b433c:	2003e6e0 	.word	0x2003e6e0
-   b4340:	2003e62c 	.word	0x2003e62c
-   b4344:	000b801c 	.word	0x000b801c
-   b4348:	2003e6a6 	.word	0x2003e6a6
-   b434c:	000b802d 	.word	0x000b802d
-   b4350:	000b802f 	.word	0x000b802f
-   b4354:	2003e62d 	.word	0x2003e62d
-   b4358:	2003e6dc 	.word	0x2003e6dc
-   b435c:	000b805c 	.word	0x000b805c
-   b4360:	2003e6dd 	.word	0x2003e6dd
-   b4364:	2003e6cc 	.word	0x2003e6cc
-   b4368:	2003e6ac 	.word	0x2003e6ac
-   b436c:	000b8031 	.word	0x000b8031
-   b4370:	2003e6a0 	.word	0x2003e6a0
+   b4328:	b004      	add	sp, #16
+   b432a:	e8bd 87f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, r9, sl, pc}
+   b432e:	bf00      	nop
+   b4330:	2003e6bc 	.word	0x2003e6bc
+   b4334:	2003e704 	.word	0x2003e704
+   b4338:	2003e6e0 	.word	0x2003e6e0
+   b433c:	2003e62c 	.word	0x2003e62c
+   b4340:	000b801c 	.word	0x000b801c
+   b4344:	2003e6a6 	.word	0x2003e6a6
+   b4348:	000b802d 	.word	0x000b802d
+   b434c:	000b802f 	.word	0x000b802f
+   b4350:	2003e62d 	.word	0x2003e62d
+   b4354:	2003e6dc 	.word	0x2003e6dc
+   b4358:	000b805c 	.word	0x000b805c
+   b435c:	2003e6dd 	.word	0x2003e6dd
+   b4360:	2003e6cc 	.word	0x2003e6cc
+   b4364:	2003e6ac 	.word	0x2003e6ac
+   b4368:	000b8031 	.word	0x000b8031
+   b436c:	2003e6a0 	.word	0x2003e6a0
+   b4370:	0002bf1f 	.word	0x0002bf1f
    b4374:	000b8041 	.word	0x000b8041
    b4378:	000b808e 	.word	0x000b808e
    b437c:	2003e6a4 	.word	0x2003e6a4
    b4380:	2003e6a8 	.word	0x2003e6a8
-   b4384:	000b805e 	.word	0x000b805e
-   b4388:	000b808a 	.word	0x000b808a
-   b438c:	000b808c 	.word	0x000b808c
-   b4390:	2003e6e4 	.word	0x2003e6e4
+   b4384:	0087cd9f 	.word	0x0087cd9f
+   b4388:	000b805e 	.word	0x000b805e
+   b438c:	000b808a 	.word	0x000b808a
+   b4390:	000b808c 	.word	0x000b808c
+   b4394:	2003e6e4 	.word	0x2003e6e4
 
-000b4394 <_Z10reportTemp6String>:
+000b4398 <_Z10reportTemp6String>:
 
-//--------------------------------------TEMPERATURE REPORTING----------------------------------------//
+//--------------------------------------TEMPERATURE REPORTING CLOUD FUNCTION----------------------------------------//
 int reportTemp(String command) {
-   b4394:	b500      	push	{lr}
+   b4398:	b500      	push	{lr}
 	unsigned char operator == (const char *cstr) const {return equals(cstr);}
-   b4396:	4913      	ldr	r1, [pc, #76]	; (b43e4 <_Z10reportTemp6String+0x50>)
-   b4398:	b089      	sub	sp, #36	; 0x24
-   b439a:	f001 fb9a 	bl	b5ad2 <_ZNK6String6equalsEPKc>
+   b439a:	4913      	ldr	r1, [pc, #76]	; (b43e8 <_Z10reportTemp6String+0x50>)
+   b439c:	b089      	sub	sp, #36	; 0x24
+   b439e:	f001 fb98 	bl	b5ad2 <_ZNK6String6equalsEPKc>
   if(command == "report") {
-   b439e:	b1e8      	cbz	r0, b43dc <_Z10reportTemp6String+0x48>
+   b43a2:	b1e8      	cbz	r0, b43e0 <_Z10reportTemp6String+0x48>
   float temperatureReading;
   sensor.read();
-   b43a0:	4811      	ldr	r0, [pc, #68]	; (b43e8 <_Z10reportTemp6String+0x54>)
-   b43a2:	f000 fa35 	bl	b4810 <_ZN6TSYS014readEv>
+   b43a4:	4811      	ldr	r0, [pc, #68]	; (b43ec <_Z10reportTemp6String+0x54>)
+   b43a6:	f000 fa33 	bl	b4810 <_ZN6TSYS014readEv>
   temperatureReading = sensor.temperature();
-   b43a6:	4810      	ldr	r0, [pc, #64]	; (b43e8 <_Z10reportTemp6String+0x54>)
-   b43a8:	f000 fa77 	bl	b489a <_ZN6TSYS0111temperatureEv>
+   b43aa:	4810      	ldr	r0, [pc, #64]	; (b43ec <_Z10reportTemp6String+0x54>)
+   b43ac:	f000 fa75 	bl	b489a <_ZN6TSYS0111temperatureEv>
   Particle.publish("Temperature", String(temperatureReading), PRIVATE);
-   b43ac:	2106      	movs	r1, #6
-   b43ae:	a804      	add	r0, sp, #16
-   b43b0:	f001 fb75 	bl	b5a9e <_ZN6StringC1Efi>
-   b43b4:	4b0d      	ldr	r3, [pc, #52]	; (b43ec <_Z10reportTemp6String+0x58>)
-   b43b6:	9a04      	ldr	r2, [sp, #16]
-   b43b8:	781b      	ldrb	r3, [r3, #0]
-   b43ba:	490d      	ldr	r1, [pc, #52]	; (b43f0 <_Z10reportTemp6String+0x5c>)
-   b43bc:	f88d 3000 	strb.w	r3, [sp]
-   b43c0:	a802      	add	r0, sp, #8
-   b43c2:	233c      	movs	r3, #60	; 0x3c
-   b43c4:	f000 fea4 	bl	b5110 <_ZN10CloudClass13publish_eventEPKcS1_iN8particle5FlagsI15PublishFlagTypehEE>
-   b43c8:	a803      	add	r0, sp, #12
-   b43ca:	f7ff feb3 	bl	b4134 <_ZNSt14__shared_countILN9__gnu_cxx12_Lock_policyE0EED1Ev>
-   b43ce:	a804      	add	r0, sp, #16
-   b43d0:	f001 fada 	bl	b5988 <_ZN6StringD1Ev>
-   b43d4:	2001      	movs	r0, #1
+   b43b0:	2106      	movs	r1, #6
+   b43b2:	a804      	add	r0, sp, #16
+   b43b4:	f001 fb73 	bl	b5a9e <_ZN6StringC1Efi>
+   b43b8:	4b0d      	ldr	r3, [pc, #52]	; (b43f0 <_Z10reportTemp6String+0x58>)
+   b43ba:	9a04      	ldr	r2, [sp, #16]
+   b43bc:	781b      	ldrb	r3, [r3, #0]
+   b43be:	490d      	ldr	r1, [pc, #52]	; (b43f4 <_Z10reportTemp6String+0x5c>)
+   b43c0:	f88d 3000 	strb.w	r3, [sp]
+   b43c4:	a802      	add	r0, sp, #8
+   b43c6:	233c      	movs	r3, #60	; 0x3c
+   b43c8:	f000 fea2 	bl	b5110 <_ZN10CloudClass13publish_eventEPKcS1_iN8particle5FlagsI15PublishFlagTypehEE>
+   b43cc:	a803      	add	r0, sp, #12
+   b43ce:	f7ff feb1 	bl	b4134 <_ZNSt14__shared_countILN9__gnu_cxx12_Lock_policyE0EED1Ev>
+   b43d2:	a804      	add	r0, sp, #16
+   b43d4:	f001 fad8 	bl	b5988 <_ZN6StringD1Ev>
+   b43d8:	2001      	movs	r0, #1
   return 1;
   } else return -1;
 }
-   b43d6:	b009      	add	sp, #36	; 0x24
-   b43d8:	f85d fb04 	ldr.w	pc, [sp], #4
+   b43da:	b009      	add	sp, #36	; 0x24
+   b43dc:	f85d fb04 	ldr.w	pc, [sp], #4
   } else return -1;
-   b43dc:	f04f 30ff 	mov.w	r0, #4294967295	; 0xffffffff
-   b43e0:	e7f9      	b.n	b43d6 <_Z10reportTemp6String+0x42>
-   b43e2:	bf00      	nop
-   b43e4:	000b8090 	.word	0x000b8090
-   b43e8:	2003e6e8 	.word	0x2003e6e8
-   b43ec:	2003e6a6 	.word	0x2003e6a6
-   b43f0:	000b8010 	.word	0x000b8010
+   b43e0:	f04f 30ff 	mov.w	r0, #4294967295	; 0xffffffff
+   b43e4:	e7f9      	b.n	b43da <_Z10reportTemp6String+0x42>
+   b43e6:	bf00      	nop
+   b43e8:	000b8090 	.word	0x000b8090
+   b43ec:	2003e6e8 	.word	0x2003e6e8
+   b43f0:	2003e6a6 	.word	0x2003e6a6
+   b43f4:	000b8010 	.word	0x000b8010
 
-000b43f4 <_Z4Test6String>:
+000b43f8 <_Z14enableOverride6String>:
 
 
 //--------------------------------------FAN OVERRIDE CLOUD FUNCTION----------------------------------------//
-int Test(String command) {
-   b43f4:	b530      	push	{r4, r5, lr}
-   b43f6:	4940      	ldr	r1, [pc, #256]	; (b44f8 <_Z4Test6String+0x104>)
-   b43f8:	b085      	sub	sp, #20
-   b43fa:	4604      	mov	r4, r0
-   b43fc:	f001 fb69 	bl	b5ad2 <_ZNK6String6equalsEPKc>
+int enableOverride(String command) {
+   b43f8:	b530      	push	{r4, r5, lr}
+   b43fa:	4940      	ldr	r1, [pc, #256]	; (b44fc <_Z14enableOverride6String+0x104>)
+   b43fc:	b085      	sub	sp, #20
+   b43fe:	4604      	mov	r4, r0
+   b4400:	f001 fb67 	bl	b5ad2 <_ZNK6String6equalsEPKc>
   if(command == "true")   //if cmd from cloud is true, permanently sets EEPROM byte on address 0 to 1;
-   b4400:	4605      	mov	r5, r0
-   b4402:	b1d0      	cbz	r0, b443a <_Z4Test6String+0x46>
+   b4404:	4605      	mov	r5, r0
+   b4406:	b1d0      	cbz	r0, b443e <_Z14enableOverride6String+0x46>
   {
     Serial.print("fan override true");  
-   b4404:	f001 fcac 	bl	b5d60 <_Z16_fetch_usbserialv>
+   b4408:	f001 fcaa 	bl	b5d60 <_Z16_fetch_usbserialv>
     int addr = 0;
     uint16_t value = 1;
-   b4408:	2401      	movs	r4, #1
+   b440c:	2401      	movs	r4, #1
     Serial.print("fan override true");  
-   b440a:	493c      	ldr	r1, [pc, #240]	; (b44fc <_Z4Test6String+0x108>)
-   b440c:	f001 fa02 	bl	b5814 <_ZN5Print5printEPKc>
+   b440e:	493c      	ldr	r1, [pc, #240]	; (b4500 <_Z14enableOverride6String+0x108>)
+   b4410:	f001 fa00 	bl	b5814 <_ZN5Print5printEPKc>
     uint16_t value = 1;
-   b4410:	f8ad 4006 	strh.w	r4, [sp, #6]
+   b4414:	f8ad 4006 	strh.w	r4, [sp, #6]
     EEPROM.put(addr, value);
-   b4414:	f001 fe02 	bl	b601c <_Z21__fetch_global_EEPROMv>
+   b4418:	f001 fe00 	bl	b601c <_Z21__fetch_global_EEPROMv>
         return t;
     }
 
     template <typename T> const T &put( int idx, const T &t )
     {
         HAL_EEPROM_Put(idx, &t, sizeof(T));
-   b4418:	2202      	movs	r2, #2
-   b441a:	f10d 0106 	add.w	r1, sp, #6
-   b441e:	2000      	movs	r0, #0
-   b4420:	f000 fa6e 	bl	b4900 <HAL_EEPROM_Put>
+   b441c:	2202      	movs	r2, #2
+   b441e:	f10d 0106 	add.w	r1, sp, #6
+   b4422:	2000      	movs	r0, #0
+   b4424:	f000 fa6c 	bl	b4900 <HAL_EEPROM_Put>
     Particle.publish("Fan Override", "true");
-   b4424:	4a34      	ldr	r2, [pc, #208]	; (b44f8 <_Z4Test6String+0x104>)
+   b4428:	4a34      	ldr	r2, [pc, #208]	; (b44fc <_Z14enableOverride6String+0x104>)
   } else if (command == "false") {  //if cmd from cloud is false, permanently sets EEPROM byte on address 0 to 0;
     Serial.print("fan override false");
     int addr = 0;
     uint16_t value = 0;
     EEPROM.put(addr, value);
     Particle.publish("Fan Override", "false");
-   b4426:	4936      	ldr	r1, [pc, #216]	; (b4500 <_Z4Test6String+0x10c>)
+   b442a:	4936      	ldr	r1, [pc, #216]	; (b4504 <_Z14enableOverride6String+0x10c>)
   } else if (command == "high") {  //if cmd from cloud is false, permanently sets EEPROM byte on address 0 to 0;
     Serial.print("fan speed high");
     int addr = 1;
     uint16_t value = 3;
     EEPROM.put(addr, value);
     Particle.publish("Fan Speed", "High");
-   b4428:	a802      	add	r0, sp, #8
-   b442a:	f7ff fe43 	bl	b40b4 <_ZN10CloudClass7publishEPKcS1_.isra.0>
-   b442e:	a803      	add	r0, sp, #12
-   b4430:	f7ff fe80 	bl	b4134 <_ZNSt14__shared_countILN9__gnu_cxx12_Lock_policyE0EED1Ev>
+   b442c:	a802      	add	r0, sp, #8
+   b442e:	f7ff fe41 	bl	b40b4 <_ZN10CloudClass7publishEPKcS1_.isra.0>
+   b4432:	a803      	add	r0, sp, #12
+   b4434:	f7ff fe7e 	bl	b4134 <_ZNSt14__shared_countILN9__gnu_cxx12_Lock_policyE0EED1Ev>
     return 1;
-   b4434:	2001      	movs	r0, #1
+   b4438:	2001      	movs	r0, #1
 
   }
 
   
   else return -1;
 }
-   b4436:	b005      	add	sp, #20
-   b4438:	bd30      	pop	{r4, r5, pc}
-   b443a:	4932      	ldr	r1, [pc, #200]	; (b4504 <_Z4Test6String+0x110>)
-   b443c:	4620      	mov	r0, r4
-   b443e:	f001 fb48 	bl	b5ad2 <_ZNK6String6equalsEPKc>
+   b443a:	b005      	add	sp, #20
+   b443c:	bd30      	pop	{r4, r5, pc}
+   b443e:	4932      	ldr	r1, [pc, #200]	; (b4508 <_Z14enableOverride6String+0x110>)
+   b4440:	4620      	mov	r0, r4
+   b4442:	f001 fb46 	bl	b5ad2 <_ZNK6String6equalsEPKc>
   } else if (command == "false") {  //if cmd from cloud is false, permanently sets EEPROM byte on address 0 to 0;
-   b4442:	b180      	cbz	r0, b4466 <_Z4Test6String+0x72>
+   b4446:	b180      	cbz	r0, b446a <_Z14enableOverride6String+0x72>
     Serial.print("fan override false");
-   b4444:	f001 fc8c 	bl	b5d60 <_Z16_fetch_usbserialv>
-   b4448:	492f      	ldr	r1, [pc, #188]	; (b4508 <_Z4Test6String+0x114>)
-   b444a:	f001 f9e3 	bl	b5814 <_ZN5Print5printEPKc>
+   b4448:	f001 fc8a 	bl	b5d60 <_Z16_fetch_usbserialv>
+   b444c:	492f      	ldr	r1, [pc, #188]	; (b450c <_Z14enableOverride6String+0x114>)
+   b444e:	f001 f9e1 	bl	b5814 <_ZN5Print5printEPKc>
     uint16_t value = 0;
-   b444e:	f8ad 5006 	strh.w	r5, [sp, #6]
+   b4452:	f8ad 5006 	strh.w	r5, [sp, #6]
     EEPROM.put(addr, value);
-   b4452:	f001 fde3 	bl	b601c <_Z21__fetch_global_EEPROMv>
-   b4456:	2202      	movs	r2, #2
-   b4458:	f10d 0106 	add.w	r1, sp, #6
-   b445c:	4628      	mov	r0, r5
-   b445e:	f000 fa4f 	bl	b4900 <HAL_EEPROM_Put>
+   b4456:	f001 fde1 	bl	b601c <_Z21__fetch_global_EEPROMv>
+   b445a:	2202      	movs	r2, #2
+   b445c:	f10d 0106 	add.w	r1, sp, #6
+   b4460:	4628      	mov	r0, r5
+   b4462:	f000 fa4d 	bl	b4900 <HAL_EEPROM_Put>
     Particle.publish("Fan Override", "false");
-   b4462:	4a28      	ldr	r2, [pc, #160]	; (b4504 <_Z4Test6String+0x110>)
-   b4464:	e7df      	b.n	b4426 <_Z4Test6String+0x32>
-   b4466:	4929      	ldr	r1, [pc, #164]	; (b450c <_Z4Test6String+0x118>)
-   b4468:	4620      	mov	r0, r4
-   b446a:	f001 fb32 	bl	b5ad2 <_ZNK6String6equalsEPKc>
+   b4466:	4a28      	ldr	r2, [pc, #160]	; (b4508 <_Z14enableOverride6String+0x110>)
+   b4468:	e7df      	b.n	b442a <_Z14enableOverride6String+0x32>
+   b446a:	4929      	ldr	r1, [pc, #164]	; (b4510 <_Z14enableOverride6String+0x118>)
+   b446c:	4620      	mov	r0, r4
+   b446e:	f001 fb30 	bl	b5ad2 <_ZNK6String6equalsEPKc>
     else if(command == "low") { //if cmd from cloud is true, permanently sets EEPROM byte on address 0 to 1;
-   b446e:	b190      	cbz	r0, b4496 <_Z4Test6String+0xa2>
+   b4472:	b190      	cbz	r0, b449a <_Z14enableOverride6String+0xa2>
     Serial.print("fan speed low");  
-   b4470:	f001 fc76 	bl	b5d60 <_Z16_fetch_usbserialv>
+   b4474:	f001 fc74 	bl	b5d60 <_Z16_fetch_usbserialv>
     uint16_t value = 1;
-   b4474:	2401      	movs	r4, #1
+   b4478:	2401      	movs	r4, #1
     Serial.print("fan speed low");  
-   b4476:	4926      	ldr	r1, [pc, #152]	; (b4510 <_Z4Test6String+0x11c>)
-   b4478:	f001 f9cc 	bl	b5814 <_ZN5Print5printEPKc>
+   b447a:	4926      	ldr	r1, [pc, #152]	; (b4514 <_Z14enableOverride6String+0x11c>)
+   b447c:	f001 f9ca 	bl	b5814 <_ZN5Print5printEPKc>
     uint16_t value = 1;
-   b447c:	f8ad 4006 	strh.w	r4, [sp, #6]
+   b4480:	f8ad 4006 	strh.w	r4, [sp, #6]
     EEPROM.put(addr, value);
-   b4480:	f001 fdcc 	bl	b601c <_Z21__fetch_global_EEPROMv>
-   b4484:	2202      	movs	r2, #2
-   b4486:	f10d 0106 	add.w	r1, sp, #6
-   b448a:	4620      	mov	r0, r4
-   b448c:	f000 fa38 	bl	b4900 <HAL_EEPROM_Put>
+   b4484:	f001 fdca 	bl	b601c <_Z21__fetch_global_EEPROMv>
+   b4488:	2202      	movs	r2, #2
+   b448a:	f10d 0106 	add.w	r1, sp, #6
+   b448e:	4620      	mov	r0, r4
+   b4490:	f000 fa36 	bl	b4900 <HAL_EEPROM_Put>
     Particle.publish("Fan Speed", "Low");
-   b4490:	4a20      	ldr	r2, [pc, #128]	; (b4514 <_Z4Test6String+0x120>)
+   b4494:	4a20      	ldr	r2, [pc, #128]	; (b4518 <_Z14enableOverride6String+0x120>)
     Particle.publish("Fan Speed", "High");
-   b4492:	4921      	ldr	r1, [pc, #132]	; (b4518 <_Z4Test6String+0x124>)
-   b4494:	e7c8      	b.n	b4428 <_Z4Test6String+0x34>
-   b4496:	4921      	ldr	r1, [pc, #132]	; (b451c <_Z4Test6String+0x128>)
-   b4498:	4620      	mov	r0, r4
-   b449a:	f001 fb1a 	bl	b5ad2 <_ZNK6String6equalsEPKc>
+   b4496:	4921      	ldr	r1, [pc, #132]	; (b451c <_Z14enableOverride6String+0x124>)
+   b4498:	e7c8      	b.n	b442c <_Z14enableOverride6String+0x34>
+   b449a:	4921      	ldr	r1, [pc, #132]	; (b4520 <_Z14enableOverride6String+0x128>)
+   b449c:	4620      	mov	r0, r4
+   b449e:	f001 fb18 	bl	b5ad2 <_ZNK6String6equalsEPKc>
   } else if (command == "medium") {  //if cmd from cloud is false, permanently sets EEPROM byte on address 0 to 0;
-   b449e:	b188      	cbz	r0, b44c4 <_Z4Test6String+0xd0>
+   b44a2:	b188      	cbz	r0, b44c8 <_Z14enableOverride6String+0xd0>
     Serial.print("fan speed medium");
-   b44a0:	f001 fc5e 	bl	b5d60 <_Z16_fetch_usbserialv>
+   b44a4:	f001 fc5c 	bl	b5d60 <_Z16_fetch_usbserialv>
     uint16_t value = 2;
-   b44a4:	2402      	movs	r4, #2
+   b44a8:	2402      	movs	r4, #2
     Serial.print("fan speed medium");
-   b44a6:	491e      	ldr	r1, [pc, #120]	; (b4520 <_Z4Test6String+0x12c>)
-   b44a8:	f001 f9b4 	bl	b5814 <_ZN5Print5printEPKc>
+   b44aa:	491e      	ldr	r1, [pc, #120]	; (b4524 <_Z14enableOverride6String+0x12c>)
+   b44ac:	f001 f9b2 	bl	b5814 <_ZN5Print5printEPKc>
     uint16_t value = 2;
-   b44ac:	f8ad 4006 	strh.w	r4, [sp, #6]
+   b44b0:	f8ad 4006 	strh.w	r4, [sp, #6]
     EEPROM.put(addr, value);
-   b44b0:	f001 fdb4 	bl	b601c <_Z21__fetch_global_EEPROMv>
-   b44b4:	4622      	mov	r2, r4
-   b44b6:	f10d 0106 	add.w	r1, sp, #6
-   b44ba:	2001      	movs	r0, #1
-   b44bc:	f000 fa20 	bl	b4900 <HAL_EEPROM_Put>
+   b44b4:	f001 fdb2 	bl	b601c <_Z21__fetch_global_EEPROMv>
+   b44b8:	4622      	mov	r2, r4
+   b44ba:	f10d 0106 	add.w	r1, sp, #6
+   b44be:	2001      	movs	r0, #1
+   b44c0:	f000 fa1e 	bl	b4900 <HAL_EEPROM_Put>
     Particle.publish("Fan Speed", "Medium");
-   b44c0:	4a18      	ldr	r2, [pc, #96]	; (b4524 <_Z4Test6String+0x130>)
-   b44c2:	e7e6      	b.n	b4492 <_Z4Test6String+0x9e>
-   b44c4:	4918      	ldr	r1, [pc, #96]	; (b4528 <_Z4Test6String+0x134>)
-   b44c6:	4620      	mov	r0, r4
-   b44c8:	f001 fb03 	bl	b5ad2 <_ZNK6String6equalsEPKc>
+   b44c4:	4a18      	ldr	r2, [pc, #96]	; (b4528 <_Z14enableOverride6String+0x130>)
+   b44c6:	e7e6      	b.n	b4496 <_Z14enableOverride6String+0x9e>
+   b44c8:	4918      	ldr	r1, [pc, #96]	; (b452c <_Z14enableOverride6String+0x134>)
+   b44ca:	4620      	mov	r0, r4
+   b44cc:	f001 fb01 	bl	b5ad2 <_ZNK6String6equalsEPKc>
   } else if (command == "high") {  //if cmd from cloud is false, permanently sets EEPROM byte on address 0 to 0;
-   b44cc:	b188      	cbz	r0, b44f2 <_Z4Test6String+0xfe>
+   b44d0:	b188      	cbz	r0, b44f6 <_Z14enableOverride6String+0xfe>
     Serial.print("fan speed high");
-   b44ce:	f001 fc47 	bl	b5d60 <_Z16_fetch_usbserialv>
-   b44d2:	4916      	ldr	r1, [pc, #88]	; (b452c <_Z4Test6String+0x138>)
-   b44d4:	f001 f99e 	bl	b5814 <_ZN5Print5printEPKc>
+   b44d2:	f001 fc45 	bl	b5d60 <_Z16_fetch_usbserialv>
+   b44d6:	4916      	ldr	r1, [pc, #88]	; (b4530 <_Z14enableOverride6String+0x138>)
+   b44d8:	f001 f99c 	bl	b5814 <_ZN5Print5printEPKc>
     uint16_t value = 3;
-   b44d8:	2303      	movs	r3, #3
-   b44da:	f8ad 3006 	strh.w	r3, [sp, #6]
+   b44dc:	2303      	movs	r3, #3
+   b44de:	f8ad 3006 	strh.w	r3, [sp, #6]
     EEPROM.put(addr, value);
-   b44de:	f001 fd9d 	bl	b601c <_Z21__fetch_global_EEPROMv>
-   b44e2:	2202      	movs	r2, #2
-   b44e4:	f10d 0106 	add.w	r1, sp, #6
-   b44e8:	2001      	movs	r0, #1
-   b44ea:	f000 fa09 	bl	b4900 <HAL_EEPROM_Put>
+   b44e2:	f001 fd9b 	bl	b601c <_Z21__fetch_global_EEPROMv>
+   b44e6:	2202      	movs	r2, #2
+   b44e8:	f10d 0106 	add.w	r1, sp, #6
+   b44ec:	2001      	movs	r0, #1
+   b44ee:	f000 fa07 	bl	b4900 <HAL_EEPROM_Put>
     Particle.publish("Fan Speed", "High");
-   b44ee:	4a10      	ldr	r2, [pc, #64]	; (b4530 <_Z4Test6String+0x13c>)
-   b44f0:	e7cf      	b.n	b4492 <_Z4Test6String+0x9e>
+   b44f2:	4a10      	ldr	r2, [pc, #64]	; (b4534 <_Z14enableOverride6String+0x13c>)
+   b44f4:	e7cf      	b.n	b4496 <_Z14enableOverride6String+0x9e>
   else return -1;
-   b44f2:	f04f 30ff 	mov.w	r0, #4294967295	; 0xffffffff
-   b44f6:	e79e      	b.n	b4436 <_Z4Test6String+0x42>
-   b44f8:	000b80a4 	.word	0x000b80a4
-   b44fc:	000b8097 	.word	0x000b8097
-   b4500:	000b7ffc 	.word	0x000b7ffc
-   b4504:	000b80b6 	.word	0x000b80b6
-   b4508:	000b80a9 	.word	0x000b80a9
-   b450c:	000b80c6 	.word	0x000b80c6
-   b4510:	000b80bc 	.word	0x000b80bc
-   b4514:	000b80ca 	.word	0x000b80ca
-   b4518:	000b80ce 	.word	0x000b80ce
-   b451c:	000b80e2 	.word	0x000b80e2
-   b4520:	000b80d8 	.word	0x000b80d8
-   b4524:	000b80e9 	.word	0x000b80e9
-   b4528:	000b80fa 	.word	0x000b80fa
-   b452c:	000b80f0 	.word	0x000b80f0
-   b4530:	000b80ff 	.word	0x000b80ff
+   b44f6:	f04f 30ff 	mov.w	r0, #4294967295	; 0xffffffff
+   b44fa:	e79e      	b.n	b443a <_Z14enableOverride6String+0x42>
+   b44fc:	000b80a4 	.word	0x000b80a4
+   b4500:	000b8097 	.word	0x000b8097
+   b4504:	000b7ffc 	.word	0x000b7ffc
+   b4508:	000b80b6 	.word	0x000b80b6
+   b450c:	000b80a9 	.word	0x000b80a9
+   b4510:	000b80c6 	.word	0x000b80c6
+   b4514:	000b80bc 	.word	0x000b80bc
+   b4518:	000b80ca 	.word	0x000b80ca
+   b451c:	000b80ce 	.word	0x000b80ce
+   b4520:	000b80e2 	.word	0x000b80e2
+   b4524:	000b80d8 	.word	0x000b80d8
+   b4528:	000b80e9 	.word	0x000b80e9
+   b452c:	000b80fa 	.word	0x000b80fa
+   b4530:	000b80f0 	.word	0x000b80f0
+   b4534:	000b80ff 	.word	0x000b80ff
 
-000b4534 <_GLOBAL__sub_I_fanValHigh>:
+000b4538 <_GLOBAL__sub_I_fanValHigh>:
 }
-   b4534:	b538      	push	{r3, r4, r5, lr}
+   b4538:	b538      	push	{r3, r4, r5, lr}
         val_(val) {
-   b4536:	4b1b      	ldr	r3, [pc, #108]	; (b45a4 <_GLOBAL__sub_I_fanValHigh+0x70>)
-String fanValHigh = "080";
-   b4538:	4d1b      	ldr	r5, [pc, #108]	; (b45a8 <_GLOBAL__sub_I_fanValHigh+0x74>)
-   b453a:	4c1c      	ldr	r4, [pc, #112]	; (b45ac <_GLOBAL__sub_I_fanValHigh+0x78>)
-   b453c:	2100      	movs	r1, #0
-   b453e:	7019      	strb	r1, [r3, #0]
-   b4540:	4b1b      	ldr	r3, [pc, #108]	; (b45b0 <_GLOBAL__sub_I_fanValHigh+0x7c>)
-   b4542:	2001      	movs	r0, #1
-   b4544:	7018      	strb	r0, [r3, #0]
+   b453a:	4b1b      	ldr	r3, [pc, #108]	; (b45a8 <_GLOBAL__sub_I_fanValHigh+0x70>)
+String fanValHigh = "025";
+   b453c:	4d1b      	ldr	r5, [pc, #108]	; (b45ac <_GLOBAL__sub_I_fanValHigh+0x74>)
+   b453e:	4c1c      	ldr	r4, [pc, #112]	; (b45b0 <_GLOBAL__sub_I_fanValHigh+0x78>)
+   b4540:	2100      	movs	r1, #0
+   b4542:	7019      	strb	r1, [r3, #0]
+   b4544:	4b1b      	ldr	r3, [pc, #108]	; (b45b4 <_GLOBAL__sub_I_fanValHigh+0x7c>)
+   b4546:	2001      	movs	r0, #1
+   b4548:	7018      	strb	r0, [r3, #0]
 SYSTEM_THREAD(ENABLED);
-   b4546:	f000 fb0b 	bl	b4b60 <system_thread_set_state>
-String fanValHigh = "080";
-   b454a:	491a      	ldr	r1, [pc, #104]	; (b45b4 <_GLOBAL__sub_I_fanValHigh+0x80>)
-   b454c:	4628      	mov	r0, r5
-   b454e:	f001 fa66 	bl	b5a1e <_ZN6StringC1EPK19__FlashStringHelper>
-   b4552:	4628      	mov	r0, r5
-String fanValMed = "050";
-   b4554:	4d18      	ldr	r5, [pc, #96]	; (b45b8 <_GLOBAL__sub_I_fanValHigh+0x84>)
-String fanValHigh = "080";
-   b4556:	4a19      	ldr	r2, [pc, #100]	; (b45bc <_GLOBAL__sub_I_fanValHigh+0x88>)
-   b4558:	4621      	mov	r1, r4
-   b455a:	f001 fdb3 	bl	b60c4 <__aeabi_atexit>
-String fanValMed = "050";
-   b455e:	4918      	ldr	r1, [pc, #96]	; (b45c0 <_GLOBAL__sub_I_fanValHigh+0x8c>)
-   b4560:	4628      	mov	r0, r5
-   b4562:	f001 fa5c 	bl	b5a1e <_ZN6StringC1EPK19__FlashStringHelper>
-   b4566:	4628      	mov	r0, r5
+   b454a:	f000 fb09 	bl	b4b60 <system_thread_set_state>
+String fanValHigh = "025";
+   b454e:	491a      	ldr	r1, [pc, #104]	; (b45b8 <_GLOBAL__sub_I_fanValHigh+0x80>)
+   b4550:	4628      	mov	r0, r5
+   b4552:	f001 fa64 	bl	b5a1e <_ZN6StringC1EPK19__FlashStringHelper>
+   b4556:	4628      	mov	r0, r5
+String fanValMed = "015";
+   b4558:	4d18      	ldr	r5, [pc, #96]	; (b45bc <_GLOBAL__sub_I_fanValHigh+0x84>)
+String fanValHigh = "025";
+   b455a:	4a19      	ldr	r2, [pc, #100]	; (b45c0 <_GLOBAL__sub_I_fanValHigh+0x88>)
+   b455c:	4621      	mov	r1, r4
+   b455e:	f001 fdb1 	bl	b60c4 <__aeabi_atexit>
+String fanValMed = "015";
+   b4562:	4918      	ldr	r1, [pc, #96]	; (b45c4 <_GLOBAL__sub_I_fanValHigh+0x8c>)
+   b4564:	4628      	mov	r0, r5
+   b4566:	f001 fa5a 	bl	b5a1e <_ZN6StringC1EPK19__FlashStringHelper>
+   b456a:	4628      	mov	r0, r5
 String fanValLow = "010";
-   b4568:	4d16      	ldr	r5, [pc, #88]	; (b45c4 <_GLOBAL__sub_I_fanValHigh+0x90>)
-String fanValMed = "050";
-   b456a:	4a14      	ldr	r2, [pc, #80]	; (b45bc <_GLOBAL__sub_I_fanValHigh+0x88>)
-   b456c:	4621      	mov	r1, r4
-   b456e:	f001 fda9 	bl	b60c4 <__aeabi_atexit>
+   b456c:	4d16      	ldr	r5, [pc, #88]	; (b45c8 <_GLOBAL__sub_I_fanValHigh+0x90>)
+String fanValMed = "015";
+   b456e:	4a14      	ldr	r2, [pc, #80]	; (b45c0 <_GLOBAL__sub_I_fanValHigh+0x88>)
+   b4570:	4621      	mov	r1, r4
+   b4572:	f001 fda7 	bl	b60c4 <__aeabi_atexit>
 String fanValLow = "010";
-   b4572:	4915      	ldr	r1, [pc, #84]	; (b45c8 <_GLOBAL__sub_I_fanValHigh+0x94>)
-   b4574:	4628      	mov	r0, r5
-   b4576:	f001 fa52 	bl	b5a1e <_ZN6StringC1EPK19__FlashStringHelper>
-   b457a:	4628      	mov	r0, r5
+   b4576:	4915      	ldr	r1, [pc, #84]	; (b45cc <_GLOBAL__sub_I_fanValHigh+0x94>)
+   b4578:	4628      	mov	r0, r5
+   b457a:	f001 fa50 	bl	b5a1e <_ZN6StringC1EPK19__FlashStringHelper>
+   b457e:	4628      	mov	r0, r5
 String setFanSpeed;
-   b457c:	4d13      	ldr	r5, [pc, #76]	; (b45cc <_GLOBAL__sub_I_fanValHigh+0x98>)
+   b4580:	4d13      	ldr	r5, [pc, #76]	; (b45d0 <_GLOBAL__sub_I_fanValHigh+0x98>)
 String fanValLow = "010";
-   b457e:	4a0f      	ldr	r2, [pc, #60]	; (b45bc <_GLOBAL__sub_I_fanValHigh+0x88>)
-   b4580:	4621      	mov	r1, r4
-   b4582:	f001 fd9f 	bl	b60c4 <__aeabi_atexit>
+   b4582:	4a0f      	ldr	r2, [pc, #60]	; (b45c0 <_GLOBAL__sub_I_fanValHigh+0x88>)
+   b4584:	4621      	mov	r1, r4
+   b4586:	f001 fd9d 	bl	b60c4 <__aeabi_atexit>
 String setFanSpeed;
-   b4586:	4912      	ldr	r1, [pc, #72]	; (b45d0 <_GLOBAL__sub_I_fanValHigh+0x9c>)
-   b4588:	4628      	mov	r0, r5
-   b458a:	f001 fa48 	bl	b5a1e <_ZN6StringC1EPK19__FlashStringHelper>
-   b458e:	4621      	mov	r1, r4
-   b4590:	4628      	mov	r0, r5
-   b4592:	4a0a      	ldr	r2, [pc, #40]	; (b45bc <_GLOBAL__sub_I_fanValHigh+0x88>)
-   b4594:	f001 fd96 	bl	b60c4 <__aeabi_atexit>
+   b458a:	4912      	ldr	r1, [pc, #72]	; (b45d4 <_GLOBAL__sub_I_fanValHigh+0x9c>)
+   b458c:	4628      	mov	r0, r5
+   b458e:	f001 fa46 	bl	b5a1e <_ZN6StringC1EPK19__FlashStringHelper>
+   b4592:	4621      	mov	r1, r4
+   b4594:	4628      	mov	r0, r5
+   b4596:	4a0a      	ldr	r2, [pc, #40]	; (b45c0 <_GLOBAL__sub_I_fanValHigh+0x88>)
+   b4598:	f001 fd94 	bl	b60c4 <__aeabi_atexit>
 }
-   b4598:	e8bd 4038 	ldmia.w	sp!, {r3, r4, r5, lr}
+   b459c:	e8bd 4038 	ldmia.w	sp!, {r3, r4, r5, lr}
 TSYS01 sensor;
-   b459c:	480d      	ldr	r0, [pc, #52]	; (b45d4 <_GLOBAL__sub_I_fanValHigh+0xa0>)
-   b459e:	f000 b81f 	b.w	b45e0 <_ZN6TSYS01C1Ev>
-   b45a2:	bf00      	nop
-   b45a4:	2003e6a5 	.word	0x2003e6a5
-   b45a8:	2003e6ac 	.word	0x2003e6ac
-   b45ac:	000b5989 	.word	0x000b5989
-   b45b0:	2003e6a6 	.word	0x2003e6a6
-   b45b4:	000b8104 	.word	0x000b8104
-   b45b8:	2003e6cc 	.word	0x2003e6cc
-   b45bc:	2003e69c 	.word	0x2003e69c
-   b45c0:	000b8108 	.word	0x000b8108
-   b45c4:	2003e6bc 	.word	0x2003e6bc
-   b45c8:	000b810c 	.word	0x000b810c
-   b45cc:	2003e704 	.word	0x2003e704
-   b45d0:	000b8040 	.word	0x000b8040
-   b45d4:	2003e6e8 	.word	0x2003e6e8
+   b45a0:	480d      	ldr	r0, [pc, #52]	; (b45d8 <_GLOBAL__sub_I_fanValHigh+0xa0>)
+   b45a2:	f000 b81f 	b.w	b45e4 <_ZN6TSYS01C1Ev>
+   b45a6:	bf00      	nop
+   b45a8:	2003e6a5 	.word	0x2003e6a5
+   b45ac:	2003e6ac 	.word	0x2003e6ac
+   b45b0:	000b5989 	.word	0x000b5989
+   b45b4:	2003e6a6 	.word	0x2003e6a6
+   b45b8:	000b8104 	.word	0x000b8104
+   b45bc:	2003e6cc 	.word	0x2003e6cc
+   b45c0:	2003e69c 	.word	0x2003e69c
+   b45c4:	000b8108 	.word	0x000b8108
+   b45c8:	2003e6bc 	.word	0x2003e6bc
+   b45cc:	000b810c 	.word	0x000b810c
+   b45d0:	2003e704 	.word	0x2003e704
+   b45d4:	000b8040 	.word	0x000b8040
+   b45d8:	2003e6e8 	.word	0x2003e6e8
 
-000b45d8 <_ZN7TwoWire5writeEi.isra.0>:
+000b45dc <_ZN7TwoWire5writeEi.isra.0>:
   bool unlock();
 
   inline size_t write(unsigned long n) { return write((uint8_t)n); }
   inline size_t write(long n) { return write((uint8_t)n); }
   inline size_t write(unsigned int n) { return write((uint8_t)n); }
   inline size_t write(int n) { return write((uint8_t)n); }
-   b45d8:	6803      	ldr	r3, [r0, #0]
-   b45da:	b2c9      	uxtb	r1, r1
-   b45dc:	689b      	ldr	r3, [r3, #8]
-   b45de:	4718      	bx	r3
+   b45dc:	6803      	ldr	r3, [r0, #0]
+   b45de:	b2c9      	uxtb	r1, r1
+   b45e0:	689b      	ldr	r3, [r3, #8]
+   b45e2:	4718      	bx	r3
 
-000b45e0 <_ZN6TSYS01C1Ev>:
+000b45e4 <_ZN6TSYS01C1Ev>:
 #define TSYS01_ADC_TEMP_CONV               0x48
 #define TSYS01_PROM_READ                   0XA0
 
 TSYS01::TSYS01() {
 
 }
-   b45e0:	4770      	bx	lr
+   b45e4:	4770      	bx	lr
 
-000b45e2 <_ZN6TSYS014initEv>:
+000b45e6 <_ZN6TSYS014initEv>:
 
 void TSYS01::init() {
-   b45e2:	b570      	push	{r4, r5, r6, lr}
-   b45e4:	4604      	mov	r4, r0
+   b45e6:	b570      	push	{r4, r5, r6, lr}
+   b45e8:	4604      	mov	r4, r0
 	// Reset the TSYS01, per datasheet
 	Wire.beginTransmission(TSYS01_ADDR);
-   b45e6:	f001 fd45 	bl	b6074 <_Z19__fetch_global_Wirev>
-   b45ea:	2177      	movs	r1, #119	; 0x77
-   b45ec:	f000 ffae 	bl	b554c <_ZN7TwoWire17beginTransmissionEi>
+   b45ea:	f001 fd43 	bl	b6074 <_Z19__fetch_global_Wirev>
+   b45ee:	2177      	movs	r1, #119	; 0x77
+   b45f0:	f000 ffac 	bl	b554c <_ZN7TwoWire17beginTransmissionEi>
 	Wire.write(TSYS01_RESET);
-   b45f0:	f001 fd40 	bl	b6074 <_Z19__fetch_global_Wirev>
-   b45f4:	211e      	movs	r1, #30
-   b45f6:	f7ff ffef 	bl	b45d8 <_ZN7TwoWire5writeEi.isra.0>
+   b45f4:	f001 fd3e 	bl	b6074 <_Z19__fetch_global_Wirev>
+   b45f8:	211e      	movs	r1, #30
+   b45fa:	f7ff ffef 	bl	b45dc <_ZN7TwoWire5writeEi.isra.0>
 	Wire.endTransmission();
-   b45fa:	f001 fd3b 	bl	b6074 <_Z19__fetch_global_Wirev>
-   b45fe:	f000 ffac 	bl	b555a <_ZN7TwoWire15endTransmissionEv>
+   b45fe:	f001 fd39 	bl	b6074 <_Z19__fetch_global_Wirev>
+   b4602:	f000 ffaa 	bl	b555a <_ZN7TwoWire15endTransmissionEv>
 	
 	delay(10);
-   b4602:	200a      	movs	r0, #10
-   b4604:	f000 fb98 	bl	b4d38 <delay>
+   b4606:	200a      	movs	r0, #10
+   b4608:	f000 fb96 	bl	b4d38 <delay>
 	
 		// Read calibration values
 	for ( uint8_t i = 0 ; i < 8 ; i++ ) {
-   b4608:	3c02      	subs	r4, #2
+   b460c:	3c02      	subs	r4, #2
 	delay(10);
-   b460a:	25a0      	movs	r5, #160	; 0xa0
+   b460e:	25a0      	movs	r5, #160	; 0xa0
 		Wire.beginTransmission(TSYS01_ADDR);
-   b460c:	f001 fd32 	bl	b6074 <_Z19__fetch_global_Wirev>
-   b4610:	2177      	movs	r1, #119	; 0x77
-   b4612:	f000 ff9b 	bl	b554c <_ZN7TwoWire17beginTransmissionEi>
+   b4610:	f001 fd30 	bl	b6074 <_Z19__fetch_global_Wirev>
+   b4614:	2177      	movs	r1, #119	; 0x77
+   b4616:	f000 ff99 	bl	b554c <_ZN7TwoWire17beginTransmissionEi>
 		Wire.write(TSYS01_PROM_READ+i*2);
-   b4616:	f001 fd2d 	bl	b6074 <_Z19__fetch_global_Wirev>
-   b461a:	4629      	mov	r1, r5
-   b461c:	f7ff ffdc 	bl	b45d8 <_ZN7TwoWire5writeEi.isra.0>
+   b461a:	f001 fd2b 	bl	b6074 <_Z19__fetch_global_Wirev>
+   b461e:	4629      	mov	r1, r5
+   b4620:	f7ff ffdc 	bl	b45dc <_ZN7TwoWire5writeEi.isra.0>
 		Wire.endTransmission();
-   b4620:	f001 fd28 	bl	b6074 <_Z19__fetch_global_Wirev>
-   b4624:	f000 ff99 	bl	b555a <_ZN7TwoWire15endTransmissionEv>
+   b4624:	f001 fd26 	bl	b6074 <_Z19__fetch_global_Wirev>
+   b4628:	f000 ff97 	bl	b555a <_ZN7TwoWire15endTransmissionEv>
 
 		Wire.requestFrom(TSYS01_ADDR,2);
-   b4628:	f001 fd24 	bl	b6074 <_Z19__fetch_global_Wirev>
-   b462c:	2202      	movs	r2, #2
-   b462e:	2177      	movs	r1, #119	; 0x77
-   b4630:	f000 ff85 	bl	b553e <_ZN7TwoWire11requestFromEhj>
+   b462c:	f001 fd22 	bl	b6074 <_Z19__fetch_global_Wirev>
+   b4630:	2202      	movs	r2, #2
+   b4632:	2177      	movs	r1, #119	; 0x77
+   b4634:	f000 ff83 	bl	b553e <_ZN7TwoWire11requestFromEhj>
 		C[i] = (Wire.read() << 8) | Wire.read();
-   b4634:	f001 fd1e 	bl	b6074 <_Z19__fetch_global_Wirev>
-   b4638:	6803      	ldr	r3, [r0, #0]
-   b463a:	695b      	ldr	r3, [r3, #20]
-   b463c:	4798      	blx	r3
-   b463e:	4606      	mov	r6, r0
-   b4640:	f001 fd18 	bl	b6074 <_Z19__fetch_global_Wirev>
-   b4644:	6803      	ldr	r3, [r0, #0]
-   b4646:	695b      	ldr	r3, [r3, #20]
-   b4648:	4798      	blx	r3
+   b4638:	f001 fd1c 	bl	b6074 <_Z19__fetch_global_Wirev>
+   b463c:	6803      	ldr	r3, [r0, #0]
+   b463e:	695b      	ldr	r3, [r3, #20]
+   b4640:	4798      	blx	r3
+   b4642:	4606      	mov	r6, r0
+   b4644:	f001 fd16 	bl	b6074 <_Z19__fetch_global_Wirev>
+   b4648:	6803      	ldr	r3, [r0, #0]
+   b464a:	695b      	ldr	r3, [r3, #20]
+   b464c:	4798      	blx	r3
 	for ( uint8_t i = 0 ; i < 8 ; i++ ) {
-   b464a:	3502      	adds	r5, #2
+   b464e:	3502      	adds	r5, #2
 		C[i] = (Wire.read() << 8) | Wire.read();
-   b464c:	ea40 2006 	orr.w	r0, r0, r6, lsl #8
+   b4650:	ea40 2006 	orr.w	r0, r0, r6, lsl #8
 	for ( uint8_t i = 0 ; i < 8 ; i++ ) {
-   b4650:	2db0      	cmp	r5, #176	; 0xb0
+   b4654:	2db0      	cmp	r5, #176	; 0xb0
 		C[i] = (Wire.read() << 8) | Wire.read();
-   b4652:	f824 0f02 	strh.w	r0, [r4, #2]!
+   b4656:	f824 0f02 	strh.w	r0, [r4, #2]!
 	for ( uint8_t i = 0 ; i < 8 ; i++ ) {
-   b4656:	d1d9      	bne.n	b460c <_ZN6TSYS014initEv+0x2a>
+   b465a:	d1d9      	bne.n	b4610 <_ZN6TSYS014initEv+0x2a>
 	}
 
 }
-   b4658:	bd70      	pop	{r4, r5, r6, pc}
-   b465a:	0000      	movs	r0, r0
-   b465c:	0000      	movs	r0, r0
+   b465c:	bd70      	pop	{r4, r5, r6, pc}
 	...
 
 000b4660 <_ZN6TSYS019calculateEv>:
@@ -1188,7 +1188,7 @@ void TSYS01::read() {
 	Wire.write(TSYS01_ADC_TEMP_CONV);
    b481e:	f001 fc29 	bl	b6074 <_Z19__fetch_global_Wirev>
    b4822:	2148      	movs	r1, #72	; 0x48
-   b4824:	f7ff fed8 	bl	b45d8 <_ZN7TwoWire5writeEi.isra.0>
+   b4824:	f7ff feda 	bl	b45dc <_ZN7TwoWire5writeEi.isra.0>
 	Wire.endTransmission();
    b4828:	f001 fc24 	bl	b6074 <_Z19__fetch_global_Wirev>
    b482c:	f000 fe95 	bl	b555a <_ZN7TwoWire15endTransmissionEv>
@@ -1202,7 +1202,7 @@ void TSYS01::read() {
 	Wire.write(TSYS01_ADC_READ);
    b4840:	f001 fc18 	bl	b6074 <_Z19__fetch_global_Wirev>
    b4844:	2100      	movs	r1, #0
-   b4846:	f7ff fec7 	bl	b45d8 <_ZN7TwoWire5writeEi.isra.0>
+   b4846:	f7ff fec9 	bl	b45dc <_ZN7TwoWire5writeEi.isra.0>
 	Wire.endTransmission();
    b484a:	f001 fc13 	bl	b6074 <_Z19__fetch_global_Wirev>
    b484e:	f000 fe84 	bl	b555a <_ZN7TwoWire15endTransmissionEv>
@@ -8721,8 +8721,8 @@ TwoWire& __fetch_global_Wire()
    b80c8:	0077 6f4c 0077 6146 206e 7053 6565 0064     w.Low.Fan Speed.
    b80d8:	6166 206e 7073 6565 2064 656d 6964 6d75     fan speed medium
    b80e8:	4d00 6465 7569 006d 6166 206e 7073 6565     .Medium.fan spee
-   b80f8:	2064 6968 6867 4800 6769 0068 3830 0030     d high.High.080.
-   b8108:	3530 0030 3130 0030                         050.010.
+   b80f8:	2064 6968 6867 4800 6769 0068 3230 0035     d high.High.025.
+   b8108:	3130 0035 3130 0030                         015.010.
 
 000b8110 <_ZTVN5spark13CellularClassE>:
 	...
@@ -8786,7 +8786,7 @@ TwoWire& __fetch_global_Wire()
    b8318:	2f63 7473 6c64 6269 722f 6e61 2e64 0063     c/stdlib/rand.c.
 
 000b8328 <link_const_variable_data_end>:
-   b8328:	000b4535 	.word	0x000b4535
+   b8328:	000b4539 	.word	0x000b4539
    b832c:	000b4dad 	.word	0x000b4dad
    b8330:	000b4e3d 	.word	0x000b4e3d
    b8334:	000b5451 	.word	0x000b5451

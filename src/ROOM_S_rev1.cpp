@@ -22,8 +22,8 @@ SYSTEM_THREAD(ENABLED);
 #include "TSYS01.h" //for temperature sensor
 
 //Defining Fan Override Variables
-String fanValHigh = "080";
-String fanValMed = "050";
+String fanValHigh = "025";
+String fanValMed = "015";
 String fanValLow = "010";
 String setFanSpeed;
 uint8_t value;
@@ -34,20 +34,20 @@ bool fanOverride;
 const int PIN_TO_SENSOR = D22;   // the pin that OUTPUT pin of sensor is connected to
 int pinStateCurrent   = LOW; // current state of pin
 int pinStatePrevious  = LOW; // previous state of pin
-const unsigned long DELAY_TIME_MS = 20000; //set to 890000 for 14:50 min override timer, main room function.
+const unsigned long DELAY_TIME_MS = 8900000; //set to 890000 for 14:50 min override timer, main room function.
 bool delayEnabled = true; //PIR Delay
 unsigned long delayStartTime;
 bool lightsCondition1;
 bool lightsCondition2;
 
 //Variables for motion reporting to cloud
-const unsigned long Motion_DELAY_TIME_MS = 5000; // 
+const unsigned long Motion_DELAY_TIME_MS = 180000; // 
 bool Motion_delayEnabled = true;
 bool Motion_setDelayExpired = false;
 unsigned long Motion_delayStartTime;
 
 //Particle Function Callouts
-int Test(String command);
+int enableOverride(String command);
 
 //Temperature Sensor
 TSYS01 sensor;
@@ -55,7 +55,7 @@ int reportTemp(String command);
 
 void setup() {
   Serial.begin(9600);
-  Particle.function("Fan Override", Test);
+  Particle.function("Fan Override", enableOverride);
   Particle.function("Report Temperature", reportTemp); 
   Serial1.begin(9600);// initialize UART to MR Logic PCBA
   pinMode(PIN_TO_SENSOR, INPUT_PULLDOWN); // set pinmode
@@ -131,7 +131,7 @@ if (pinStatePrevious == LOW && pinStateCurrent == HIGH && value == 1) {   // pin
   }
 }
 
-//--------------------------------------TEMPERATURE REPORTING----------------------------------------//
+//--------------------------------------TEMPERATURE REPORTING CLOUD FUNCTION----------------------------------------//
 int reportTemp(String command) {
   if(command == "report") {
   float temperatureReading;
@@ -144,7 +144,7 @@ int reportTemp(String command) {
 
 
 //--------------------------------------FAN OVERRIDE CLOUD FUNCTION----------------------------------------//
-int Test(String command) {
+int enableOverride(String command) {
   if(command == "true")   //if cmd from cloud is true, permanently sets EEPROM byte on address 0 to 1;
   {
     Serial.print("fan override true");  
