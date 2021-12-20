@@ -21,21 +21,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   8 .module_info_crc 00000004  000b8468  000b8468  00028468  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  9 .debug_info   00108259  00000000  00000000  0002846c  2**0
+  9 .debug_info   00108258  00000000  00000000  0002846c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 10 .debug_abbrev 00012517  00000000  00000000  001306c5  2**0
+ 10 .debug_abbrev 00012517  00000000  00000000  001306c4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .debug_loc    0003703b  00000000  00000000  00142bdc  2**0
+ 11 .debug_loc    0003703b  00000000  00000000  00142bdb  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 12 .debug_aranges 00002a68  00000000  00000000  00179c17  2**0
+ 12 .debug_aranges 00002a68  00000000  00000000  00179c16  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_ranges 0000a020  00000000  00000000  0017c67f  2**0
+ 13 .debug_ranges 0000a020  00000000  00000000  0017c67e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_macro  0003891a  00000000  00000000  0018669f  2**0
+ 14 .debug_macro  0003891a  00000000  00000000  0018669e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_line   0003a8ff  00000000  00000000  001befb9  2**0
+ 15 .debug_line   0003a8ff  00000000  00000000  001befb8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_str    0012d7f3  00000000  00000000  001f98b8  2**0
+ 16 .debug_str    0012d7f3  00000000  00000000  001f98b7  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_frame  00007a44  00000000  00000000  003270ac  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -789,7 +789,7 @@ struct __ApplicationProductVersion {
    b4556:	f001 fd11 	bl	b5f7c <spark_protocol_instance>
    b455a:	4623      	mov	r3, r4
    b455c:	4622      	mov	r2, r4
-   b455e:	4629      	mov	r1, r5
+   b455e:	2102      	movs	r1, #2
    b4560:	f001 fd1c 	bl	b5f9c <spark_protocol_set_product_firmware_version>
 SYSTEM_THREAD(ENABLED);
    b4564:	4628      	mov	r0, r5

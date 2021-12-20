@@ -16,7 +16,7 @@ void setup();
 void loop();
 #line 9 "c:/Users/ro/OneDrive/Documents/Firmware/Sense/src/ROOM_S_rev1.ino"
 PRODUCT_ID(15549);
-PRODUCT_VERSION(1);
+PRODUCT_VERSION(2);
 SYSTEM_THREAD(ENABLED);
 
 //Includes
