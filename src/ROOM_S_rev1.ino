@@ -6,7 +6,8 @@
     Last Checked: Dec 20th 2021
 */
 
-
+PRODUCT_ID(15549);
+PRODUCT_VERSION(1);
 SYSTEM_THREAD(ENABLED);
 
 //Includes
